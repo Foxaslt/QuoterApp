@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using QuoterApp.Entities;
 
 namespace QuoterApp.Repositories
 {
@@ -15,18 +16,18 @@ namespace QuoterApp.Repositories
             new MarketOrder {InstrumentId = "DK50782120", Price = 99.81, Quantity = 421 },
         };
 
-        private int position = 0;
+        private int _position = 0;
 
         public MarketOrder GetNextMarketOrder()
         {
-            if (_quotes.Length <= position)
+            if (_quotes.Length <= _position)
             {
                 // No more quotes to give
                 Thread.Sleep(Timeout.Infinite);
             }
 
             Thread.Sleep(500); // Simulates delay in getting next quote
-            return _quotes[position++];
+            return _quotes[_position++];
         }
     }
 }

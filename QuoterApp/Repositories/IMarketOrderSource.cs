@@ -1,4 +1,6 @@
-﻿namespace QuoterApp.Repositories
+﻿using QuoterApp.Entities;
+
+namespace QuoterApp.Repositories
 {
     /// <summary>
     /// Interface to access market orders

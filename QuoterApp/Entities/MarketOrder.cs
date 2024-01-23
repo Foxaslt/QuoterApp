@@ -1,4 +1,4 @@
-﻿namespace QuoterApp
+﻿namespace QuoterApp.Entities
 {
     public class MarketOrder
     {

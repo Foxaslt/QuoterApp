@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace QuoterApp
+﻿namespace QuoterApp.Calculator
 {
     /// <summary>
     /// Basic quoter can be used to build quoting API or quoting chat bot.
@@ -10,7 +8,7 @@ namespace QuoterApp
         /// <summary>
         /// Returns best possible price for given instrument at given quantity.
         /// </summary>
-        /// <param name="instrumentId">Instrumnet ID to quote, e.g. "DK50782120"</param>
+        /// <param name="instrumentId">Instrument ID to quote, e.g. "DK50782120"</param>
         /// <param name="quantity">Quantity to quote for, e.g. 19</param>
         /// <returns>Best available total price to buy given quantity</returns>
         public double GetQuote(string instrumentId, int quantity);
