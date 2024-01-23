@@ -7,32 +7,61 @@ namespace QuoterApp
 {
     public class YourQuoter : IQuoter
     {
-        private const int _timeout = 1000;
-        private readonly IMarketOrderSource _source;
-        public YourQuoter(IMarketOrderSource marketOrderSource)
+        ITaskManager _taskManager;
+
+        public YourQuoter(ITaskManager taskManager)
         {
-            _source = marketOrderSource;
+            _taskManager = taskManager;
         }
 
         public double GetQuote(string instrumentId, int quantity)
         {
-            var token = new CancellationToken();
-            Task<MarketOrder> task = Task<MarketOrder>.Factory.StartNew( () => _source.GetNextMarketOrder(), token);//.Wait(new TimeSpan(0, 0, 0, _timeout));
-            var t =  Task.WhenAny(task, Task.Delay(_timeout, token));
-            if (t == task)
-            //{
-            //}
-            //else
-            //{
-            //    // task has been cancelled
-            //}
+            if (string.IsNullOrWhiteSpace(instrumentId))
+            {
+                throw new ArgumentException(nameof(instrumentId));
+            }
 
-            return 0;
+            double price = double.MaxValue;
+            bool isMinimumPrice = false;
+            var order = _taskManager.GetOrder();
+            while (order != null)
+            {
+                if (!InstrumentMatches(order, instrumentId) || !QuantityIsLess(order, quantity)) continue;
+
+                if (order.Price < price)
+                {
+                    price = order.Price;
+                    isMinimumPrice = true;
+                }
+
+                order = _taskManager.GetOrder();
+            }
+
+            if (isMinimumPrice)
+            {
+                return price;
+            }
+
+            throw new Exception($"Unable to find best price for instrument {instrumentId} and quantity {quantity}");
         }
 
         public double GetVolumeWeightedAveragePrice(string instrumentId)
         {
             throw new NotImplementedException();
         }
+
+        #region Private methods
+
+        private bool QuantityIsLess(MarketOrder order, int quantity)
+        {
+            return order.Quantity < quantity;
+        }
+
+        private bool InstrumentMatches(MarketOrder order, string instrumentId)
+        {
+            return order.InstrumentId == instrumentId;
+        }
+
+        #endregion
     }
 }
