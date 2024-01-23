@@ -83,6 +83,7 @@ namespace QuoterAppTests
                     "DK50782120", 110,
                     double.NaN).SetName(
                     "Two other instruments in source, Instrument provided, Returns NaN");
+
                 //yield return new List<MarketOrder>()
                 //{
                 //    new MarketOrder() { InstrumentId = "DK50782120", Quantity = 100, Price = 21.2 },

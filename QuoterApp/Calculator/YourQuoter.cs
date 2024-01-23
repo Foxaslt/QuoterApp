@@ -7,7 +7,7 @@ namespace QuoterApp.Calculator
     public class YourQuoter : IQuoter
     {
         private readonly ITaskManager _taskManager;
-
+        
         public YourQuoter(ITaskManager taskManager)
         {
             _taskManager = taskManager;
@@ -29,7 +29,6 @@ namespace QuoterApp.Calculator
             ValidateInstrumentId(instrumentId);
 
             var orders = _taskManager.GetOrders();
-
             var filteredOrders = orders.Where(order => order.InstrumentId.Equals(instrumentId)).ToArray();
 
             var vwap = filteredOrders.Sum(order => order.Quantity * order.Price) /
